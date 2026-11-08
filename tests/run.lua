@@ -25,6 +25,13 @@ eq("CursorColumn stands out from the editor", hex("CursorColumn", "bg"), "#3f546
 eq("git add sign is teal", hex("GitSignsAdd", "fg"), "#1abc9c")
 eq("git change sign is a deeper yellow", hex("GitSignsChange", "fg"), "#f5cc5a")
 eq("git delete sign is bright red", hex("GitSignsDelete", "fg"), "#ff1a2d")
+for _, group in ipairs({ "DiagnosticSignError", "DiagnosticSignWarn", "DiagnosticSignInfo", "DiagnosticSignHint",
+  "GitSignsAdd", "GitSignsChange", "GitSignsDelete" }) do
+  eq(group .. " takes its bg from SignColumn", hex(group, "bg"), nil)
+end
+eq("noice cmdline border is teal", hex("NoiceCmdlinePopupBorder", "fg"), "#1abc9c")
+eq("noice cmdline border has no gutter bg", hex("NoiceCmdlinePopupBorder", "bg"), nil)
+eq("noice search border is gold", hex("NoiceCmdlinePopupBorderSearch", "fg"), "#ffcb6b")
 eq("String", hex("String", "fg"), "#f78794")
 eq("@variable.member is teal", hex("@variable.member", "fg"), "#1abc9c")
 vim.api.nvim_set_hl(0, "SnacksPickerTree", { link = "LineNr", default = true })
