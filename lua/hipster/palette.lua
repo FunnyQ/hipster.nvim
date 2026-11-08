@@ -14,8 +14,8 @@ return {
   status = "#dddddd",
 
   teal = "#1abc9c",
-  coral = "#ec6051",
-  coral_dark = "#c25044",
+  coral = "#d45649",
+  coral_dark = "#af483d",
   coral_light = "#f4bbb5",
   red = "#ff5370",
   pink = "#f78794",

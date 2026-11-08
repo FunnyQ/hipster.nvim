@@ -19,7 +19,7 @@ vim.cmd.colorscheme("hipster")
 eq("colors_name", vim.g.colors_name, "hipster")
 eq("background", vim.o.background, "dark")
 eq("Normal bg", hex("Normal", "bg"), "#2c3e50")
-eq("LineNr gutter is coral", hex("LineNr", "bg"), "#ec6051")
+eq("LineNr gutter is coral", hex("LineNr", "bg"), "#d45649")
 eq("LineNr is bold", vim.api.nvim_get_hl(0, { name = "LineNr" }).bold, true)
 eq("CursorColumn stands out from the editor", hex("CursorColumn", "bg"), "#3f5469")
 eq("git add sign is teal", hex("GitSignsAdd", "fg"), "#1abc9c")
@@ -39,7 +39,7 @@ eq("snacks tree lines have no gutter bg", hex("SnacksPickerTree", "bg"), nil)
 eq("minimap git delete sign shows on the editor bg", hex("NeominimapGitDeleteSign", "fg"), "#eb2525")
 eq("minimap cursor line sign follows CursorLine", hex("NeominimapCursorLineSign", "bg"), "#34495e")
 eq("lualine diff delete reads on a light segment", hex("LuaLineDiffDelete", "fg"), "#a93226")
-eq("terminal color 1", vim.g.terminal_color_1, "#ec6051")
+eq("terminal color 1", vim.g.terminal_color_1, "#d45649")
 
 require("hipster").setup({
   overrides = function(c)
@@ -49,13 +49,13 @@ require("hipster").setup({
 vim.cmd.colorscheme("hipster")
 eq("override replaces a group", hex("Comment", "fg"), "#1abc9c")
 eq("override drops replaced attrs", vim.api.nvim_get_hl(0, { name = "Comment" }).italic, nil)
-eq("override adds a group", hex("MyGroup", "bg"), "#ec6051")
+eq("override adds a group", hex("MyGroup", "bg"), "#d45649")
 
 local theme = require("lualine.themes.hipster")
 eq("lualine normal a", theme.normal.a.bg, "#1abc9c")
-eq("lualine insert a", theme.insert.a.bg, "#ec6051")
+eq("lualine insert a", theme.insert.a.bg, "#d45649")
 eq("lualine normal b is a light teal", theme.normal.b.bg, "#8ddece")
-eq("lualine insert b is a light coral", theme.insert.b.bg, "#f6b0a8")
+eq("lualine insert b is a light coral", theme.insert.b.bg, "#eaaba4")
 eq("lualine c is white", theme.normal.c, { fg = "#2c3e50", bg = "#ffffff" })
 
 local bl = require("hipster.bufferline")({
@@ -75,6 +75,6 @@ eq("bufferline selected tab joins the editor", bl.buffer_selected, { fg = "#ecf0
 eq("bufferline inactive diagnostics stay readable", bl.error_visible.fg, "#eeeeee")
 eq("bufferline slope separator", bl.separator, { fg = "#1abc9c", bg = "#1abc9c" })
 eq("bufferline selected slope separator", bl.separator_selected, { fg = "#1abc9c", bg = "#2c3e50" })
-eq("bufferline indicator is coral", bl.indicator_selected.fg, "#ec6051")
+eq("bufferline indicator is coral", bl.indicator_selected.fg, "#d45649")
 
 if failures > 0 then os.exit(1) end
