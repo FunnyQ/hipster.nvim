@@ -77,4 +77,53 @@ eq("bufferline slope separator", bl.separator, { fg = "#1abc9c", bg = "#1abc9c" 
 eq("bufferline selected slope separator", bl.separator_selected, { fg = "#1abc9c", bg = "#2c3e50" })
 eq("bufferline indicator is coral", bl.indicator_selected.fg, "#d45649")
 
+local hipster = require("hipster")
+local cached_palette = require("hipster.palette")
+local no_overrides = function() return {} end
+hipster.setup({ palette = "awacs", overrides = no_overrides })
+vim.cmd.colorscheme("hipster")
+eq("AWACS editor is navy", hex("Normal", "bg"), "#060e18")
+eq("cached palette follows selection", cached_palette.bg, "#060e18")
+eq("AWACS gutter stays dark", hex("SignColumn", "bg"), "#0b1928")
+eq("AWACS gutter text stays legible", hex("LineNr", "fg"), "#7895a5")
+eq("AWACS current line number is orange", hex("CursorLineNr", "fg"), "#ed9a4b")
+eq("AWACS syntax keeps its orange accent", hex("Number", "fg"), "#ed9a4b")
+eq("AWACS terminal red", vim.g.terminal_color_1, "#ff6670")
+eq("AWACS git signs inherit the gutter", hex("GitSignsAdd", "bg"), nil)
+local awacs_theme = require("lualine.themes.hipster")
+eq("lualine reloads for AWACS", awacs_theme.normal.c, { fg = "#b6ccd5", bg = "#0b1928" })
+eq("AWACS lualine secondary section is dark", awacs_theme.normal.b.bg, "#142b3d")
+eq("AWACS mode label reads on the accent", awacs_theme.normal.a.fg, "#060e18")
+eq("AWACS native status line stays dark", hex("StatusLine", "bg"), "#0b1928")
+local awacs_bl = require("hipster.bufferline")({ highlights = { background = {}, buffer_selected = {} } })
+eq("AWACS inactive buffers stay dark", awacs_bl.background, { fg = "#94acba", bg = "#0b1928" })
+eq("AWACS selected buffer joins the editor", awacs_bl.buffer_selected.bg, "#060e18")
+eq("AWACS buffer indicator is orange", awacs_bl.indicator_selected.fg, "#ed9a4b")
+
+hipster.setup({ overrides = function(c) return { Normal = { fg = c.fg, bg = "NONE" } } end })
+vim.cmd.colorscheme("hipster")
+eq("AWACS supports transparent overrides", hex("Normal", "bg"), nil)
+eq("setup without a palette keeps the selected palette", cached_palette.bg, "#060e18")
+
+local valid_palette = cached_palette.bg
+local valid = pcall(hipster.setup, { palette = "does_not_exist" })
+eq("unknown palettes fail", valid, false)
+eq("unknown palettes leave current colors intact", cached_palette.bg, valid_palette)
+local valid_type = pcall(hipster.setup, { palette = 42 })
+eq("invalid palette types fail", valid_type, false)
+
+hipster.setup({ palette = { bg = "#101820", teal = "#00ee88" }, overrides = no_overrides })
+vim.cmd.colorscheme("hipster")
+eq("custom palette changes the editor", hex("Normal", "bg"), "#101820")
+eq("custom palette inherits unspecified Hipster colors", cached_palette.coral, "#d45649")
+eq("custom palette drops previous AWACS UI roles", hex("SignColumn", "bg"), "#d45649")
+eq("custom palette reaches lualine", require("lualine.themes.hipster").normal.a.bg, "#00ee88")
+
+hipster.setup({ palette = "hipster" })
+vim.cmd.colorscheme("hipster")
+eq("switching back restores Hipster", hex("Normal", "bg"), "#2c3e50")
+eq("switching back restores the coral gutter", hex("SignColumn", "bg"), "#d45649")
+eq("switching back restores white lualine", require("lualine.themes.hipster").normal.c.bg, "#ffffff")
+eq("palette module keeps its table identity", cached_palette == require("hipster.palette"), true)
+
 if failures > 0 then os.exit(1) end

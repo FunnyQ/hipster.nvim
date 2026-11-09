@@ -1,6 +1,6 @@
 # hipster.nvim
 
-A dark Neovim colorscheme ported from [Hipster](https://github.com/lalevac/vscode-hipster-theme): a slate-blue editor, a coral gutter, and teal accents.
+A dark Neovim colorscheme with selectable palettes. Keep the original [Hipster](https://github.com/lalevac/vscode-hipster-theme) colors or use AWACS for a navy tactical briefing interface.
 
 ## Requirements
 
@@ -24,20 +24,48 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ## Options
 
-Call `setup` before `:colorscheme hipster`. `overrides` receives the palette and returns highlight groups. Each group replaces the built-in one whole.
+Call `setup` before `:colorscheme hipster`. Select a built-in palette with `palette`:
+
+| Palette | Editor | Gutter, tabs and status line |
+| --- | --- | --- |
+| `"hipster"` (default) | Slate blue, teal and coral | Coral gutter, teal tabs, white status line |
+| `"awacs"` | Navy, icy cyan, orange and muted green | Dark surfaces, orange current line number and buffer indicator |
+
+```lua
+require("hipster").setup({ palette = "awacs" })
+vim.cmd.colorscheme("hipster")
+```
+
+Run both lines again to switch palettes in the current session. Keep the `hipster` colorscheme name for both palettes. Omit `palette` in later `setup` calls to keep the selected palette.
+
+Pass a color table to create a custom palette. Unspecified colors inherit from the original Hipster palette. Extend AWACS explicitly when using it as a base:
 
 ```lua
 require("hipster").setup({
+  palette = vim.tbl_extend("force", require("hipster.palettes.awacs"), {
+    bg = "#081522",
+    blue = "#abc9e5",
+  }),
+})
+vim.cmd.colorscheme("hipster")
+```
+
+Use `overrides` for highlight attributes or transparency. It receives the selected palette and returns highlight groups. Each group replaces the built-in one whole.
+
+```lua
+require("hipster").setup({
+  palette = "awacs",
   overrides = function(c)
     return {
       Comment = { fg = c.muted, italic = true },
       CursorLine = { bg = c.bg_dark },
+      Normal = { fg = c.fg, bg = "NONE" },
     }
   end,
 })
 ```
 
-The palette lives in `lua/hipster/palette.lua`.
+Find built-in palettes in `lua/hipster/palettes/`. Read the active colors through `require("hipster.palette")`; cached references follow palette changes. Use the optional `gutter_*`, `tab_*`, `statusline_*` and `accent_fg` fields in the AWACS palette to style UI surfaces separately from syntax colors. Set `terminal_red` to choose the normal terminal red independently of the coral accent.
 
 ## Lualine
 
@@ -45,7 +73,9 @@ The palette lives in `lua/hipster/palette.lua`.
 require("lualine").setup({ options = { theme = "hipster" } })
 ```
 
-Each mode paints section `a` in its color and section `b` in a light tint of it, on a white bar. The diff counts already read on the light sections. Diagnostics take their colors from the dark editor, so give them the `on_light_*` palette:
+Use the same lualine theme name for both palettes. Hipster uses a white bar with tinted mode sections; AWACS uses dark sections with a colored mode label. Reload the colorscheme after switching palettes to refresh lualine.
+
+Use the palette's `on_light_*` fields for diagnostics. These retain their original names and follow the selected status line colors:
 
 ```lua
 local p = require("hipster.palette")
@@ -66,7 +96,7 @@ lualine_b = {
 
 ## Bufferline
 
-bufferline.nvim derives its colors from `Normal`, so pass the Hipster highlights to it. Tabs sit on a teal bar and the current buffer joins the editor.
+Pass the Hipster highlights callback to bufferline.nvim. Hipster uses a teal bar; AWACS uses navy tabs with an orange indicator. The current buffer joins the editor in both palettes.
 
 ```lua
 require("bufferline").setup({

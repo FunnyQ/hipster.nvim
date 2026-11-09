@@ -11,9 +11,9 @@ end
 
 local function mode(color)
   return {
-    a = { fg = c.punct, bg = color, gui = "bold" },
-    b = { fg = c.bg, bg = tint(color, 0.5) },
-    c = { fg = c.bg, bg = "#ffffff" },
+    a = { fg = c.statusline_mode_fg or c.punct, bg = color, gui = "bold" },
+    b = { fg = c.statusline_fg or c.bg, bg = c.statusline_section_bg or tint(color, 0.5) },
+    c = { fg = c.statusline_fg or c.bg, bg = c.statusline_bg or "#ffffff" },
   }
 end
 
@@ -25,8 +25,8 @@ return {
   command = mode(c.warn),
   terminal = mode(c.info),
   inactive = {
-    a = { fg = c.muted, bg = c.status, gui = "bold" },
-    b = { fg = c.muted, bg = c.status },
-    c = { fg = c.muted, bg = c.status },
+    a = { fg = c.statusline_inactive_fg or c.muted, bg = c.statusline_inactive_bg or c.status, gui = "bold" },
+    b = { fg = c.statusline_inactive_fg or c.muted, bg = c.statusline_inactive_bg or c.status },
+    c = { fg = c.statusline_inactive_fg or c.muted, bg = c.statusline_inactive_bg or c.status },
   },
 }
