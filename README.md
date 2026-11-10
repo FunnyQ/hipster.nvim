@@ -1,6 +1,6 @@
 # hipster.nvim
 
-A dark Neovim colorscheme with selectable palettes. Keep the original [Hipster](https://github.com/lalevac/vscode-hipster-theme) colors or use AWACS for a navy tactical briefing interface.
+A dark Neovim colorscheme with selectable palettes. Keep the original [Hipster](https://github.com/lalevac/vscode-hipster-theme) colors or use AWACS for a CRT phosphor-green tactical interface.
 
 ## Requirements
 
@@ -29,7 +29,7 @@ Call `setup` before `:colorscheme hipster`. Select a built-in palette with `pale
 | Palette | Editor | Gutter, tabs and status line |
 | --- | --- | --- |
 | `"hipster"` (default) | Slate blue, teal and coral | Coral gutter, teal tabs, white status line |
-| `"awacs"` | Navy, icy cyan, orange and muted green | Dark surfaces, orange current line number and buffer indicator |
+| `"awacs"` | Black-green CRT, phosphor green, amber and red | Blue gutter, muted green buffer bar and status line |
 
 ```lua
 require("hipster").setup({ palette = "awacs" })
@@ -73,7 +73,7 @@ Find built-in palettes in `lua/hipster/palettes/`. Read the active colors throug
 require("lualine").setup({ options = { theme = "hipster" } })
 ```
 
-Use the same lualine theme name for both palettes. Hipster uses a white bar with tinted mode sections; AWACS uses dark sections with a colored mode label. Reload the colorscheme after switching palettes to refresh lualine.
+Use the same lualine theme name for both palettes. Hipster uses a white bar with tinted mode sections; AWACS uses a muted green bar with a darker green section. Reload the colorscheme after switching palettes to refresh lualine.
 
 Use the palette's `on_light_*` fields for diagnostics. These retain their original names and follow the selected status line colors:
 
@@ -96,7 +96,7 @@ lualine_b = {
 
 ## Bufferline
 
-Pass the Hipster highlights callback to bufferline.nvim. Hipster uses a teal bar; AWACS uses navy tabs with an orange indicator. The current buffer joins the editor in both palettes.
+Pass the Hipster highlights callback to bufferline.nvim. Hipster uses a teal bar; AWACS uses a muted green bar matching its status line. The current buffer joins the editor in both palettes.
 
 ```lua
 require("bufferline").setup({
